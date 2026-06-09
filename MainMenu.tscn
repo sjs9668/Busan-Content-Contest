@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://3qf7k28maio6"]
+
+[ext_resource type="Script" uid="uid://bpfydhllg63ua" path="res://scripts/MainMenu.gd" id="1_rmbxk"]
+
+[node name="MainMenu" type="CanvasLayer" unique_id=454856101]
+script = ExtResource("1_rmbxk")
+
+[node name="Control" type="Control" parent="." unique_id=217101684]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control" unique_id=936955159]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Center" type="CenterContainer" parent="Control/Panel" unique_id=903394469]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuBox" type="PanelContainer" parent="Control/Panel/Center" unique_id=1913879423]
+custom_minimum_size = Vector2(520, 300)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Control/Panel/Center/MenuBox" unique_id=1734581577]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Control/Panel/Center/MenuBox/VBox" unique_id=1612855995]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Rock On Indie"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnStart" type="Button" parent="Control/Panel/Center/MenuBox/VBox" unique_id=680797766]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "START"
+
+[node name="RowVolume" type="HBoxContainer" parent="Control/Panel/Center/MenuBox/VBox" unique_id=1070822205]
+layout_mode = 2
+
+[node name="LblVolume" type="Label" parent="Control/Panel/Center/MenuBox/VBox/RowVolume" unique_id=737729718]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Volume"
+
+[node name="SldVolume" type="HSlider" parent="Control/Panel/Center/MenuBox/VBox/RowVolume" unique_id=879701600]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.8

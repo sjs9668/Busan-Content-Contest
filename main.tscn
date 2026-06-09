@@ -1,0 +1,327 @@
+[gd_scene format=3 uid="uid://cbjg7djo286vw"]
+
+[ext_resource type="Script" uid="uid://db5krrrlobsg2" path="res://scripts/main.gd" id="1_0xm2m"]
+[ext_resource type="AudioStream" uid="uid://c3iq4rasml7so" path="res://audio/bgm.mp3" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://d3r8qkfacywm0" path="res://assets/characters/project_R_캐릭터_4.png" id="2_kek77"]
+[ext_resource type="Texture2D" uid="uid://cts3yfpt3bbev" path="res://assets/characters/project_R_캐릭터_1.png" id="2_lquwl"]
+[ext_resource type="Texture2D" uid="uid://dscwyoiljc1pw" path="res://assets/characters/project_R_캐릭터_2.png" id="3_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dpy7sqmjfj1ng" path="res://assets/characters/project_R_캐릭터_3.png" id="4_272bh"]
+[ext_resource type="Texture2D" uid="uid://b324bt7e8e25p" path="res://assets/characters/project_R_캐릭터_6.png" id="6_4c57u"]
+[ext_resource type="Texture2D" uid="uid://dj6nkk3udrd7k" path="res://assets/characters/project_R_캐릭터_5.png" id="7_efxa6"]
+[ext_resource type="Texture2D" uid="uid://c4xiabmofts12" path="res://assets/characters/project_R_캐릭터_7.png" id="8_dg77c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ig7tw"]
+bg_color = Color(1, 0.23137255, 0.23137255, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5vw27"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kek77")
+}],
+"loop": false,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lquwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7mycd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_272bh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7mycd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_lquwl")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_4c57u")
+}],
+"loop": false,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_efxa6")
+}],
+"loop": false,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_dg77c")
+}],
+"loop": false,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_ycdy4"]
+resource_name = "CharAnim.gd"
+script/source = "extends AnimatedSprite2D
+
+@export var action_hold_time: float = 0.12
+
+func _ready() -> void:
+	play(\"idle\")
+
+func play_action(anim_name: String) -> void:
+	if sprite_frames == null:
+		return
+	if not sprite_frames.has_animation(anim_name):
+		return
+
+	play(anim_name)
+
+	# 연타 대응: 마지막 입력만 복귀
+	var token := Time.get_ticks_msec()
+	set_meta(\"token\", token)
+
+	await get_tree().create_timer(action_hold_time).timeout
+	if int(get_meta(\"token\")) != token:
+		return
+
+	play(\"idle\")
+"
+
+[node name="Main" type="Node2D" unique_id=1033161001]
+script = ExtResource("1_0xm2m")
+
+[node name="BeatTimer" type="Timer" parent="." unique_id=1000841947]
+
+[node name="Lane" type="Node2D" parent="." unique_id=99022074]
+position = Vector2(475, 0)
+
+[node name="HitLine" type="ColorRect" parent="Lane" unique_id=1642841780]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 344.0
+offset_bottom = 348.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+
+[node name="Notes" type="Node2D" parent="Lane" unique_id=378643324]
+position = Vector2(742, 436)
+rotation = 1.5707964
+
+[node name="HitArea" type="Area2D" parent="Lane" unique_id=700874080]
+position = Vector2(-202, 441)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lane/HitArea" unique_id=176352294]
+scale = Vector2(0.4800005, 11.84)
+shape = SubResource("RectangleShape2D_ig7tw")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=839165317]
+
+[node name="ScoreLabel" type="Label" parent="UI" unique_id=2001498379]
+offset_left = 21.0
+offset_top = 21.0
+offset_right = 124.0
+offset_bottom = 74.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.31521547, 0.07016479, 0.5281222, 1)
+theme_override_font_sizes/font_size = 40
+text = "000000"
+
+[node name="s" type="Label" parent="UI" unique_id=547544880]
+offset_left = 21.0
+offset_top = 59.0
+offset_right = 104.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Score"
+
+[node name="ComboLabel" type="Label" parent="UI" unique_id=1099786827]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -27.0
+offset_top = 19.0
+offset_right = 64.0
+offset_bottom = 136.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3137255, 0.07058824, 0.5294118, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 90
+text = "00"
+vertical_alignment = 1
+
+[node name="c" type="Label" parent="UI" unique_id=1366073919]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -45.0
+offset_top = 107.0
+offset_right = 48.0
+offset_bottom = 160.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.3137255, 0.07058824, 0.5294118, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "COMBO"
+
+[node name="JudgeLabel" type="Label" parent="UI" unique_id=1384843374]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -303.0
+offset_top = -15.0
+offset_right = -302.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+vertical_alignment = 1
+
+[node name="UpgradeOverlay" type="Control" parent="UI" unique_id=2004991738]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Control" parent="UI/UpgradeOverlay" unique_id=572702660]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="UI/UpgradeOverlay/Panel" unique_id=1368496316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.13816993, 0.14733289, 0.38109186, 0.65000004)
+
+[node name="Center" type="CenterContainer" parent="UI/UpgradeOverlay/Panel" unique_id=26829466]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RootVBox" type="VBoxContainer" parent="UI/UpgradeOverlay/Panel/Center" unique_id=214662695]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/UpgradeOverlay/Panel/Center/RootVBox" unique_id=1348588805]
+layout_mode = 2
+text = "UPGRADE AVAILABLE"
+horizontal_alignment = 1
+
+[node name="RemainLabel" type="Label" parent="UI/UpgradeOverlay/Panel/Center/RootVBox" unique_id=921916432]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 2
+text = "남은 강화 기회: 5회"
+horizontal_alignment = 1
+
+[node name="Cards" type="HBoxContainer" parent="UI/UpgradeOverlay/Panel/Center/RootVBox" unique_id=1403517085]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Card_Key" type="Button" parent="UI/UpgradeOverlay/Panel/Center/RootVBox/Cards" unique_id=1616902156]
+custom_minimum_size = Vector2(350, 140)
+layout_mode = 2
+text = "ADD KEY (+1)
+노트에 적힐 새로운 키를 추가합니다.
+(← - ←,→ - ←,→,↑ - ←,→,↑,↓)"
+
+[node name="Card_Split" type="Button" parent="UI/UpgradeOverlay/Panel/Center/RootVBox/Cards" unique_id=206039444]
+custom_minimum_size = Vector2(350, 140)
+layout_mode = 2
+text = "SPLIT BEAT (x2)
+박자를 더 쪼개어 노트를 빠르게 생성합니다.
+(1 → 1/2 → 1/3 → 1/6)"
+
+[node name="BeatBar" type="ProgressBar" parent="UI" unique_id=1418993375]
+offset_right = 1152.0
+offset_bottom = 31.0
+theme_override_font_sizes/font_size = 20
+max_value = 16.0
+
+[node name="HPBar" type="ProgressBar" parent="UI" unique_id=1380296758]
+custom_minimum_size = Vector2(300, 20)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -28.0
+offset_right = 150.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_ig7tw")
+max_value = 4.0
+step = 1.0
+value = 4.0
+show_percentage = false
+
+[node name="HPText" type="Label" parent="UI/HPBar" unique_id=255244571]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "4/4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=1955579134]
+stream = ExtResource("2_0xm2m")
+volume_db = -14.0
+mix_target = 1
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="." unique_id=1955579999]
+mix_target = 1
+
+[node name="CharAnim" type="AnimatedSprite2D" parent="." unique_id=1613695040]
+process_mode = 3
+position = Vector2(144, 423.00003)
+scale = Vector2(0.178, 0.18)
+sprite_frames = SubResource("SpriteFrames_5vw27")
+animation = &"idle"
+frame = 1
+frame_progress = 0.15148696
+script = SubResource("GDScript_ycdy4")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1999001001]
+z_index = -100
+centered = false

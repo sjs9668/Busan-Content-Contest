@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://kl5rjcajhgaj"]
+
+[sub_resource type="GDScript" id="GDScript_53f0o"]
+resource_name = "EndingScreen.gd"
+script/source = "extends Control
+
+@export var game_scene_path: String = \"res://Main.tscn\"
+
+@onready var stage1_label: Label = $CenterContainer/VBoxContainer/ScoreList/Stage1Label
+@onready var stage2_label: Label = $CenterContainer/VBoxContainer/ScoreList/Stage2Label
+@onready var stage3_label: Label = $CenterContainer/VBoxContainer/ScoreList/Stage3Label
+@onready var total_label: Label  = $CenterContainer/VBoxContainer/ScoreList/TotalLabel
+@onready var retry_button: Button = $CenterContainer/VBoxContainer/RetryButton
+
+func _ready() -> void:
+	# ScoreResult는 AutoLoad(싱글톤)이어야 함
+	var s1: int = int(ScoreResult.stage_scores.get(1, 0))
+	var s2: int = int(ScoreResult.stage_scores.get(2, 0))
+	var s3: int = int(ScoreResult.stage_scores.get(3, 0))
+	var total: int = int(ScoreResult.total_score)
+
+	stage1_label.text = \"Stage 1 : %d\" % s1
+	stage2_label.text = \"Stage 2 : %d\" % s2
+	stage3_label.text = \"Stage 3 : %d\" % s3
+	total_label.text  = \"TOTAL : %d\" % total
+
+	retry_button.pressed.connect(_on_retry_pressed)
+
+func _on_retry_pressed() -> void:
+	ScoreResult.reset()
+	get_tree().change_scene_to_file(game_scene_path)
+"
+
+[node name="EndingScreen" type="Control" unique_id=1989835501]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_53f0o")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1928681620]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=2007215755]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1113841209]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "ALL STAGES CLEAR!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreList" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=155331627]
+layout_mode = 2
+
+[node name="Stage1Label" type="Label" parent="CenterContainer/VBoxContainer/ScoreList" unique_id=1718561317]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Stage 1 : 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stage2Label" type="Label" parent="CenterContainer/VBoxContainer/ScoreList" unique_id=1343212385]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Stage 2 : 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stage3Label" type="Label" parent="CenterContainer/VBoxContainer/ScoreList" unique_id=1052230978]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Stage 3 : 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TotalLabel" type="Label" parent="CenterContainer/VBoxContainer/ScoreList" unique_id=476382398]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "TOTAL : 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RetryButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=475687282]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "다시하기"

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dkbsqhawbfnyw"]
+
+[ext_resource type="Script" uid="uid://b4xmjn7dn8wil" path="res://scripts/note.gd" id="1_doocs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_doocs"]
+
+[node name="Note" type="Node2D" unique_id=557445261]
+script = ExtResource("1_doocs")
+
+[node name="Body" type="ColorRect" parent="." unique_id=569488849]
+offset_left = -30.0
+offset_top = 30.0
+offset_right = 30.0
+offset_bottom = 90.0
+rotation = -1.5707964
+color = Color(0.88235295, 0, 0, 1)
+
+[node name="KeyLabel" type="Label" parent="." unique_id=684508794]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = 52.0
+offset_right = 68.0
+offset_bottom = 108.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 1
+theme_override_font_sizes/font_size = 40
+text = "←"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitBox" type="Area2D" parent="." unique_id=1281064374]
+position = Vector2(0, -5)
+scale = Vector2(1, -0.032255847)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=413494993]
+position = Vector2(-5.9604645e-06, -155.01065)
+scale = Vector2(3.0400028, -94.20696)
+shape = SubResource("RectangleShape2D_doocs")
